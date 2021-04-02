@@ -1,20 +1,41 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { TodoScreen } from './src/screens';
+const Stack = createStackNavigator();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});
+import {
+  LoginScreen,
+  ProfileScreen,
+  RegisterScreen,
+  TodoScreen,
+} from './src/screens';
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoggedIn(true);
+    }, 5000);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <TodoScreen />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <>
+            <Stack.Screen name="todo" component={TodoScreen} />
+            <Stack.Screen name="profile" component={ProfileScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="login" component={LoginScreen} />
+            <Stack.Screen name="register" component={RegisterScreen} />
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
